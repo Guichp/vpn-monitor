@@ -16,13 +16,13 @@ if [ -z "$TOKEN" ] || [ -z "$CHAT_ID" ] || [ -z "$VPN_DIR" ]; then
     exit 1
 fi
 
-# Check if the public IP has changed checking the file /tmp/public_ip.txt
-if [ -f /tmp/public_ip.txt ]; then
-  OLD_IP=$(cat /tmp/public_ip.txt)
+# Check if the public IP has changed checking the file public_ip.txt
+if [ -f "$VPN_DIR/public_ip.txt" ]; then
+  OLD_IP=$(cat "$VPN_DIR/public_ip.txt")
 else
-  echo "No previous public IP found. Creating /tmp/public_ip.txt with current IP."
+  echo "No previous public IP found. Creating public_ip.txt with current IP."
   OLD_IP=$(curl -s https://api.ipify.org)
-  echo "$OLD_IP" >/tmp/public_ip.txt
+  echo "$OLD_IP" > "$VPN_DIR/public_ip.txt"
 fi
 
 if ! CURRENT_IP=$(curl -s --max-time 10 https://api.ipify.org); then
@@ -32,7 +32,7 @@ fi
 
 if [ "$CURRENT_IP" != "$OLD_IP" ]; then
   echo "Public IP has changed from $OLD_IP to $CURRENT_IP."
-  echo "$CURRENT_IP" >/tmp/public_ip.txt
+  echo "$CURRENT_IP" > "$VPN_DIR/public_ip.txt"
 
   
 
@@ -40,7 +40,7 @@ if [ "$CURRENT_IP" != "$OLD_IP" ]; then
   sed -i "s/WG_HOST=.*/WG_HOST=$CURRENT_IP/" "$VPN_DIR/compose.yml"
 
   # Restart the container
-  cd "$VPN_DIR"
+  cd $VPN_DIR
   docker compose down
   docker compose up --build -d
 
@@ -54,3 +54,4 @@ else
   echo "Public IP has not changed. Current IP is still $OLD_IP."
   exit 0
 fi
+
