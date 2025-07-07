@@ -4,7 +4,7 @@
 # It is intended to be run as a cron job.
 
 # Load environment variables from .env file
-echo "$(dirname "$0")"
+#echo "$(dirname "$0")" # debugging purposes
 cd "$(dirname "$0")" # Change to the directory where the script is located to get the correct path to .env
 source .env
 # this has loaded the TOKEN and CHAT_ID variables for the telegram bot
