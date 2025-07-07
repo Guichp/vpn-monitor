@@ -25,8 +25,8 @@ This script:
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/yourusername/vpn-ip-monitor.git
-   cd vpn-ip-monitor
+   git clone https://github.com/Guichp/vpn-monitor.git
+   cd vpn-monitor
    ```
 2. Create a `.env` file with your configuration:
 
