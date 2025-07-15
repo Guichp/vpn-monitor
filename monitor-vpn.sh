@@ -12,7 +12,7 @@ source .env
 
 # Verify environment variables
 if [ -z "$TOKEN" ] || [ -z "$CHAT_ID" ] || [ -z "$VPN_DIR" ]; then
-    echo "Error: Required environment variables not set."
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - Error: Required environment variables not set."
     exit 1
 fi
 
@@ -20,7 +20,7 @@ fi
 if [ -f "$VPN_DIR/public_ip.txt" ]; then
   OLD_IP=$(cat "$VPN_DIR/public_ip.txt")
 else
-  echo "No previous public IP found. Creating public_ip.txt with current IP."
+  echo "$(date '+%Y-%m-%d %H:%M:%S') - No previous public IP found. Creating public_ip.txt with current IP."
   OLD_IP=$(curl -s https://api.ipify.org)
   echo "$OLD_IP" > "$VPN_DIR/public_ip.txt"
 fi
@@ -31,7 +31,7 @@ if ! CURRENT_IP=$(curl -s --max-time 10 https://api.ipify.org); then
 fi
 
 if [ "$CURRENT_IP" != "$OLD_IP" ]; then
-  echo "Public IP has changed from $OLD_IP to $CURRENT_IP."
+  echo "$(date '+%Y-%m-%d %H:%M:%S') - Public IP has changed from $OLD_IP to $CURRENT_IP."
   echo "$CURRENT_IP" > "$VPN_DIR/public_ip.txt"
 
   
@@ -51,7 +51,7 @@ if [ "$CURRENT_IP" != "$OLD_IP" ]; then
     -d text="$MESSAGE"
 
 else
-  echo "Public IP has not changed. Current IP is still $OLD_IP."
+  echo "$(date '+%Y-%m-%d %H:%M:%S') - Public IP has not changed. Current IP is still $OLD_IP."
   exit 0
 fi
 
